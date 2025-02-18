@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EncryptionAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1fda394d6dbada3c34c46f816c35968be629e577")]
 [assembly: System.Reflection.AssemblyProductAttribute("EncryptionAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EncryptionAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

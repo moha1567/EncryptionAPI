@@ -3,39 +3,45 @@ name: Deploy to AWS Elastic Beanstalk
 on:
   push:
     branches:
-      - letsgo  #// Se till att detta matchar din huvudbranch
+      - main  # Ändra detta till den branch som du vill distribuera från (t.ex. "letsgo")
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout din repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Installera .NET SDK
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0'  
+          dotnet-version: '9.0'
 
+      # Bygg och publicera din .NET-applikation
       - name: Publish .NET app
         run: dotnet publish -c Release -o ./publish
 
+      # Zip-fil för distribution
       - name: Zip published app
         run: zip -r deploy.zip ./publish
 
+      # Konfigurera AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1  
+          aws-region: eu-north-1  # Ange rätt region, exempelvis eu-north-1 för Stockholm
 
+      # Distribuera till Elastic Beanstalk
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
-          application_name: ${{ secrets.AWS_EB_APPLICATION_NAME }}
-          environment_name: ${{ secrets.AWS_EB_ENVIRONMENT_NAME }}
+          application_name: EncryptionAPI  # Ditt Elastic Beanstalk-applikationsnamn
+          environment_name: EncryptionAPI-env  # Ditt Elastic Beanstalk-miljönamn
           version_label: "deploy-${{ github.run_number }}"
-          region: eu-north-1  
-          deployment_package: deploy.zip
+          region: eu-north-1  # Regionen där din Elastic Beanstalk-miljö är
+          deployment_package: deploy.zip  # Zip-filen som innehåller din publicerade applikation

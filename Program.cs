@@ -1,41 +1,21 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// Lägg till services för API och Swagger
+builder.Services.AddControllers(); // Lägg till detta för att stödja controllers
+builder.Services.AddEndpointsApiExplorer(); // Lägg till för att kunna skapa Swagger
+builder.Services.AddSwaggerGen(); // Lägg till för att generera Swagger/OpenAPI-dokumentation
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Aktivera Swagger UI i utvecklingsmiljö
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger(); // Generera Swagger-dokumentation
+    app.UseSwaggerUI(); // Visa Swagger UI
 }
 
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+app.UseAuthorization();
+app.MapControllers(); // Detta mappar alla controllers, t.ex. EncryptionController
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

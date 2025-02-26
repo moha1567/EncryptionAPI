@@ -1,5 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -13,7 +14,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/", () => "API is running!");
+app.MapGet("/", () => "Hello World!");
+
+
+app.MapGet("add", () => "API is running!");
+
+app.MapGet("yo", () => "Funkar det?");
+
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-app.Run($"http://0.0.0.0:{port}");
+app.Run();

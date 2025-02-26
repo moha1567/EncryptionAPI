@@ -1,21 +1,19 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Lägg till services för API och Swagger
-builder.Services.AddControllers(); // Lägg till detta för att stödja controllers
-builder.Services.AddEndpointsApiExplorer(); // Lägg till för att kunna skapa Swagger
-builder.Services.AddSwaggerGen(); // Lägg till för att generera Swagger/OpenAPI-dokumentation
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Aktivera Swagger UI i utvecklingsmiljö
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger(); // Generera Swagger-dokumentation
-    app.UseSwaggerUI(); // Visa Swagger UI
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers(); // Detta mappar alla controllers, t.ex. EncryptionController
 
-app.Run();
+app.MapGet("/", () => "API is running!");
+
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Run($"http://0.0.0.0:{port}");

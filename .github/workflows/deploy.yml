@@ -3,7 +3,7 @@ name: Deploy to AWS Elastic Beanstalk
 on:
   push:
     branches:
-      - main  # Ändra detta till den branch som du vill distribuera från (t.ex. "letsgo")
+      - letsgo  # Ändra detta till den branch som du vill distribuera från (t.ex. "letsgo")
 
 jobs:
   deploy:
